@@ -93,6 +93,7 @@ def regex_to_nfa(expr:RegExp, alphabet:List[Symbol]) -> NFA:
 
         if isinstance(expr, Literal):
             s0, s1 = next_s(), next_s()
+            assert expr.char in alphabet, "literal symbol must be in alphabet"
             return NFA(alphabet, {s0,s1}, {s0 : {expr.char : {s1}}}, dict(), s0, {s1})
         
         elif isinstance(expr, Dot):
