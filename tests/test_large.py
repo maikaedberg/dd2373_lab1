@@ -48,6 +48,12 @@ class TestRegexProperty(unittest.TestCase):
             "((ab|cd)*(ef|gh)+)|(((ij)+|(kl)?)(mn|op)+(qr)*st+)", 
             list("abcdefghijklmnopqrst")
         )
+    
+    def test_regex_6(self):
+        self.run_property_test(
+            "abcd*|cba(abc)+|(abc)+(bdb)(abc)?|a.b.c.d|(((abc)+)+)+", 
+            ["a", "b", "c", "d", "e"]
+        )
         
 if __name__ == "__main__":
     unittest.main()
