@@ -9,7 +9,7 @@ def process_file(input_path, graph=False):
     if len(lines) < 3:
         raise ValueError("Input file must have at least 3 lines: alphabet, regex, and one test string.")
 
-    alphabet = [s for s in lines[0].strip()]
+    alphabet = [s for s in lines[0] if s != '\n']
     regexstr_input = lines[1].strip()
     test_strings = [line.strip() for line in lines[2:] if line.strip()]
 
