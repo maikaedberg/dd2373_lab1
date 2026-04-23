@@ -93,7 +93,7 @@ class DFA:
         if q2 in self.acc_states:
             self.acc_states.remove(q2)
     
-    def complete_match(self, input_str:str):
+    def complete_match(self, input_str:str) -> bool:
         q = self.start_state
         for s in input_str:
             q = self.transitions[q][s]
@@ -101,7 +101,7 @@ class DFA:
             return True
         return False
     
-    def partial_match(self, input_str:str):
+    def partial_match(self, input_str:str) -> bool:
         q = self.start_state
         if q in self.acc_states:
             return True

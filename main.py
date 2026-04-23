@@ -1,5 +1,5 @@
 import argparse
-from regex import build_minimal_dfa
+from regex import match_substrings
 
 def process_file(input_path, graph=False):
     with open(input_path, "r") as f:
@@ -14,11 +14,7 @@ def process_file(input_path, graph=False):
 
     regexstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
 
-    dfa = build_minimal_dfa(regexstr, alphabet, graph)
-    for s in test_strings:
-        match = dfa.partial_match(s)
-        if match:
-            print(s)
+    match_substrings(regexstr, alphabet, graph, test_strings)
 
 def main():
     parser = argparse.ArgumentParser()

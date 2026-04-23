@@ -1,4 +1,4 @@
-from regex import match_string
+from regex import get_match_complete_strings
 import unittest
 
 class TestRegexSearch(unittest.TestCase):
@@ -9,51 +9,57 @@ class TestRegexSearch(unittest.TestCase):
     alphabet = ["a", "b"]
 
     def test_literal(self):
-        self.assertTrue(match_string("a", "a", self.alphabet))
-        self.assertFalse(match_string("a", "b", self.alphabet))
-        self.assertFalse(match_string("a", "", self.alphabet))
+        result = get_match_complete_strings("a", self.alphabet, test_strings=["a", "b", ""])
+        self.assertEqual(result["a"], True)
+        self.assertEqual(result["b"], False)
+        self.assertEqual(result[""], False)
 
     def test_dot(self):
-        self.assertTrue(match_string(".", "a", self.alphabet))
-        self.assertTrue(match_string(".", "b", self.alphabet))
-        self.assertFalse(match_string(".", "", self.alphabet))
-        self.assertFalse(match_string(".", "aa", self.alphabet))
+        result = get_match_complete_strings(".", self.alphabet, test_strings=["a", "b", ""])
+        self.assertEqual(result["a"], True)
+        self.assertEqual(result["b"], True)
+        self.assertEqual(result[""], False)
 
     def test_closure(self):
         # a*
-        self.assertTrue(match_string("a*", "", self.alphabet))
-        self.assertTrue(match_string("a*", "a", self.alphabet))
-        self.assertTrue(match_string("a*", "aa", self.alphabet))
-        self.assertFalse(match_string("a*", "b", self.alphabet))
-        self.assertFalse(match_string("a*", "ab", self.alphabet))
+        result = get_match_complete_strings("a*", self.alphabet, test_strings=["", "a", "aa", "b", "ab"])
+        self.assertEqual(result[""], True)
+        self.assertEqual(result["a"], True)
+        self.assertEqual(result["aa"], True)
+        self.assertEqual(result["b"], False)
+        self.assertEqual(result["ab"], False)
 
     def test_one_or_more(self):
         # a+
-        self.assertFalse(match_string("a+", "", self.alphabet))
-        self.assertTrue(match_string("a+", "a", self.alphabet))
-        self.assertTrue(match_string("a+", "aa", self.alphabet))
-        self.assertFalse(match_string("a+", "b", self.alphabet))
+        result = get_match_complete_strings("a+", self.alphabet, test_strings=["", "a", "aa", "b"])
+        self.assertEqual(result[""], False)
+        self.assertEqual(result["a"], True)
+        self.assertEqual(result["aa"], True)
+        self.assertEqual(result["b"], False)
 
     def test_zero_or_one(self):
         # a?
-        self.assertTrue(match_string("a?", "", self.alphabet))
-        self.assertTrue(match_string("a?", "a", self.alphabet))
-        self.assertFalse(match_string("a?", "aa", self.alphabet))
-        self.assertFalse(match_string("a?", "b", self.alphabet))
+        result = get_match_complete_strings("a?", self.alphabet, test_strings=["", "a", "aa", "b"])
+        self.assertEqual(result[""], True)
+        self.assertEqual(result["a"], True)
+        self.assertEqual(result["aa"], False)
+        self.assertEqual(result["b"], False)
 
     def test_concatenation(self):
         # ab
-        self.assertTrue(match_string("ab", "ab", self.alphabet))
-        self.assertFalse(match_string("ab", "a", self.alphabet))
-        self.assertFalse(match_string("ab", "b", self.alphabet))
-        self.assertFalse(match_string("ab", "aba", self.alphabet))
+        result = get_match_complete_strings("ab", self.alphabet, test_strings=["ab", "a", "b", "aba"])
+        self.assertEqual(result["ab"], True)
+        self.assertEqual(result["a"], False)
+        self.assertEqual(result["b"], False)
+        self.assertEqual(result["aba"], False)
 
     def test_union(self):
         # a|b
-        self.assertTrue(match_string("a|b", "a", self.alphabet))
-        self.assertTrue(match_string("a|b", "b", self.alphabet))
-        self.assertFalse(match_string("a|b", "", self.alphabet))
-        self.assertFalse(match_string("a|b", "ab", self.alphabet))
+        result = get_match_complete_strings("a|b", self.alphabet, test_strings=["a", "b", "", "ab"])
+        self.assertEqual(result["a"], True)
+        self.assertEqual(result["b"], True)
+        self.assertEqual(result[""], False)
+        self.assertEqual(result["ab"], False)
         
 
 if __name__ == "__main__":

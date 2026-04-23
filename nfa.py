@@ -67,7 +67,7 @@ class NFA:
         dsts = self.get_eps_closure(dsts)
         return dsts
     
-    def partial_match(self, input_str:str):
+    def partial_match(self, input_str:str) -> bool:
         qs = self.get_eps_closure_state(self.start_state)
         if qs & self.acc_states:
             return True
@@ -77,7 +77,7 @@ class NFA:
                 return True
         return False
     
-    def complete_match(self, input_str: str):
+    def complete_match(self, input_str: str) -> bool:
         qs = self.get_eps_closure_state(self.start_state)
         for s in input_str:
             qs = self.reached_by_a(qs, s)
