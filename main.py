@@ -13,9 +13,7 @@ def process_file(input_path, graph=False):
     regexstr_input = lines[1].strip()
     test_strings = [line.strip() for line in lines[2:] if line.strip()]
 
-    regexstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
-
-    regex_match_result = match_substrings(regexstr, alphabet, test_strings, graph)
+    regex_match_result = match_substrings(regexstr_input, alphabet, test_strings, graph)
     for s, match in regex_match_result.items():
         if match:
             print(s)
