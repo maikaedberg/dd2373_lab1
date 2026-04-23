@@ -66,7 +66,22 @@ class NFA:
         dsts = self.reached_by_a_symbol(srcs, a)
         dsts = self.get_eps_closure(dsts)
         return dsts
-        
+    
+    def partial_match(self, input_str:str):
+        qs = self.get_eps_closure_state(self.start_state)
+        if qs & self.acc_states:
+            return True
+        for s in input_str:
+            qs = self.reached_by_a(qs, s)
+            if qs & self.acc_states:
+                return True
+        return False
+    
+    def complete_match(self, input_str: str):
+        qs = self.get_eps_closure_state(self.start_state)
+        for s in input_str:
+            qs = self.reached_by_a(qs, s)
+        return bool(qs & self.acc_states)
 
 
 def regex_to_nfa(expr:RegExp, alphabet:List[Symbol]) -> NFA:
