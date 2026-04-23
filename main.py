@@ -1,5 +1,5 @@
 import argparse
-from regex import match_substring
+from regex import build_minimal_dfa
 
 def process_file(input_path, graph=False):
     with open(input_path, "r") as f:
@@ -12,8 +12,9 @@ def process_file(input_path, graph=False):
     regexstr = lines[1].strip()
     test_strings = [line.strip() for line in lines[2:] if line.strip()]
 
+    dfa = build_minimal_dfa(regexstr, alphabet, graph)
     for s in test_strings:
-        match = match_substring(regexstr, s, alphabet, graph=graph)
+        match = dfa.partial_match(s)
         if match:
             print(s)
 
@@ -24,10 +25,6 @@ def main():
                         help="Input file: line 1 = alphabet, line 2 = regex, line 3+ = strings to test")
     # -g added if we want to generate graph for the NFA / DFA, default is False
     parser.add_argument("-g", action="store_true", help="Generate graph for the NFA / DFA")
-
-    args = parser.parse_args()
-    process_file(args.f, graph=args.g)
-
 
 if __name__ == "__main__":
     main()
