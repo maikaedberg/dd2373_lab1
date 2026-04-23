@@ -15,11 +15,11 @@ class DFA:
         start_state: State,
         acc_states: Set[State]
     ) -> None:
-        self.alphabet = alphabet
-        self.states = states
-        self.transitions = trans
-        self.start_state = start_state
-        self.acc_states = acc_states
+        self.alphabet : list[Symbol] = alphabet
+        self.states : Set[State] = states
+        self.transitions : Transition = trans
+        self.start_state : State = start_state
+        self.acc_states : Set[State] = acc_states
 
     def is_accepting_state(self, q:State):
         return q in self.acc_states

@@ -21,12 +21,12 @@ class NFA:
         start_state: State,
         acc_states: Set[State]
     ) -> None:
-        self.alphabet = alphabet
-        self.states = states
-        self.transitions = trans
-        self.eps_transitions = epstrans
-        self.start_state = start_state
-        self.acc_states = acc_states
+        self.alphabet : list[Symbol] = alphabet
+        self.states : Set[State] = states
+        self.transitions : Transition = trans
+        self.eps_transitions : EpsilonTransition = epstrans
+        self.start_state : State = start_state
+        self.acc_states : Set[State] = acc_states
 
     def get_transition(self, q:State, a:Symbol) -> Set:
         dst = self.transitions.get(q, dict()).get(a, set())
