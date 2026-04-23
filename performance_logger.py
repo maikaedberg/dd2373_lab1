@@ -99,7 +99,7 @@ def performance_matching_time():
     regexp_input = "(abbc|bcab)+c(abc|aaaa)"
     alphabet = ["a", "b", "c"]
 
-    # run with random strings of length from 100000 to 1000000 with step 10000
+    # run with random strings of length from 100000 to 1000000 with step 100000
     test_strings = []
     for i in range(100000, 1000001, 100000):
         s = "".join(random.choice(alphabet) for _ in range(i))
