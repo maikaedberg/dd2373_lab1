@@ -30,3 +30,8 @@ To run each individual test:
     python3 -m unittest tests.test_large
     python3 -m unittest tests.test_provided
 
+## Performance Logging
+To get the tables generated for the report run:
+
+    python3 performance_logger.py
+
