@@ -8,8 +8,9 @@ import unittest
 
 class TestRegexProperty(unittest.TestCase):
 
-    def run_property_test(self, regexstr, alphabet):
+    def run_property_test(self, regexstr_input, alphabet):
 
+        regexstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
         dfa = build_minimal_dfa(regexstr, alphabet)
 
         for i in range(1000):

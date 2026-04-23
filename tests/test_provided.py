@@ -10,8 +10,10 @@ class TestRegexProperty(unittest.TestCase):
 
     alphabet = ["a", "b", "c", "d", "e"]
 
-    def run_property_test(self, regexstr:str, alphabet:List[str]):
+    def run_property_test(self, regexstr_input:str, alphabet:List[str]):
+        regexstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
         dfa = build_minimal_dfa(regexstr, alphabet)
+
         for _ in range(1000):
             length = random.randint(0, 20)
             s = "".join(random.choice(alphabet) for _ in range(length))
@@ -38,10 +40,7 @@ class TestRegexProperty(unittest.TestCase):
         self.run_property_test("a+.+b?a+.+b+", self.alphabet)
 
     def test_regex_5(self):
-        self.run_property_test(
-            "abcd*|cba(abc)+|(abc)+(bdb)(abc)?|a.b.c.d|(((abc)+)+)+", 
-            self.alphabet
-        )
+        self.run_property_test("abcd*|cba(abc)+|(abc)+(bdb)(abc)?|a.b.c.d|(((abc)+)+)+", self.alphabet)
         
 if __name__ == "__main__":
     unittest.main()

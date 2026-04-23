@@ -9,8 +9,10 @@ def process_file(input_path, graph=False):
         raise ValueError("Input file must have at least 3 lines: alphabet, regex, and one test string.")
 
     alphabet = [s for s in lines[0].strip()]
-    regexstr = lines[1].strip()
+    regexstr_input = lines[1].strip()
     test_strings = [line.strip() for line in lines[2:] if line.strip()]
+
+    regexstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
 
     dfa = build_minimal_dfa(regexstr, alphabet, graph)
     for s in test_strings:
