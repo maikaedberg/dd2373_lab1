@@ -14,7 +14,10 @@ def process_file(input_path, graph=False):
 
     regexstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
 
-    match_substrings(regexstr, alphabet, graph, test_strings)
+    regex_match_result = match_substrings(regexstr, alphabet, graph, test_strings)
+    for s, match in regex_match_result.items():
+        if match:
+            print(s)
 
 def main():
     parser = argparse.ArgumentParser()

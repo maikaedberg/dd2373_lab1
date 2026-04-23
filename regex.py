@@ -25,15 +25,16 @@ def build_minimal_dfa(regexstr:str, alphabet:List[str], graph:bool=False, timing
 
     return dfa 
 
-def match_substrings(regexstr_input:str, alphabet:List[str], graph:bool=False, test_strings:List[str]=[]):
+def match_substrings(regexstr_input:str, alphabet:List[str], graph:bool=False, test_strings:List[str]=[]) -> Dict[str, bool]:
 
     regexpstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
     dfa = build_minimal_dfa(regexpstr, alphabet, graph)
 
-    for s in test_strings:
-        match = dfa.partial_match(s)
-        if match:
-            print(s)
+    matched_strings = {
+        s: dfa.partial_match(s) for s in test_strings
+    }
+    
+    return matched_strings
 
 def get_match_complete_strings(regexstr_input:str, alphabet:List[str], graph:bool=False, test_strings:List[str]=[]) -> Dict[str, bool]:
     
