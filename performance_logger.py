@@ -124,7 +124,7 @@ def performance_matching_time():
     return df.to_latex(
         index=False,
         escape=False,      # important for regex symbols!
-        caption="Performance of DFA matching for \\text{" + regexp_input + "} regex",
+        caption="Performance of DFA matching for random strings with \\text{" + regexp_input + "} regex",
         label="tab:dfa-matching-performance"
     )
 
@@ -163,8 +163,8 @@ def performance_matching_nfa_vs_dfa():
 
     return df.to_latex(
         index=False,
-        escape=False,      # important for regex symbols!
-        caption="Performance of NFA vs DFA matching for \\text{" + regexp_input + "} regex",
+        escape=False,
+        caption="Performance of NFA vs DFA matching for random strings with \\text{" + regexp_input + "} regex",
         label="tab:nfa-vs-dfa-matching-performance"
     )
 
