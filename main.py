@@ -2,6 +2,7 @@ import argparse
 from regex import match_substrings
 
 def process_file(input_path, graph=False):
+    print("processing file:", input_path)
     with open(input_path, "r") as f:
         lines = f.read().splitlines()
 
@@ -27,5 +28,6 @@ def main():
     # -g added if we want to generate graph for the NFA / DFA, default is False
     parser.add_argument("-g", action="store_true", help="Generate graph for the NFA / DFA")
 
+    process_file(parser.parse_args().f, parser.parse_args().g)
 if __name__ == "__main__":
     main()
