@@ -15,11 +15,9 @@ def build_minimal_dfa(regexstr:str, alphabet:List[str], graph:bool=False, timing
         nfa_to_graph(nfa, "graphs/nfa.png")
     
     dfa = nfa_to_dfa(nfa)
-    dfa.is_dfa() # check each step is a dfa
     if graph:
         dfa_to_graph(dfa, "graphs/subset_dfa.png")
     dfa.minimize()
-    dfa.is_dfa() # check each step is a dfa
     if graph:
         dfa_to_graph(dfa, "graphs/min_dfa.png")
 
