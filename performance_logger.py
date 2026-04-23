@@ -99,24 +99,28 @@ def performance_matching_time():
     regexp_input = "(abbc|bcab)+c(abc|aaaa)"
     alphabet = ["a", "b", "c"]
 
-    # run with random strings of length from 100000 to 1000000 with step 100000
     test_strings = []
     for i in range(100000, 1000001, 100000):
-        s = "".join(random.choice(alphabet) for _ in range(i))
-        test_strings.append(s)  
+        s = "abbc" * (i // 4)
+        test_strings.append(s)
     
     regex = "(.*)({R})".format(R=regexp_input)
     dfa = build_minimal_dfa(regex, alphabet)
 
     rows = []   
     for s in test_strings:
-        t = time.time()
-        dfa.partial_match(s)
-        matching_time_ms = (time.time() - t) * 1000
+        # do 10 times to get an average
+
+        matching_time_ms_list = []
+        for _ in range(10):
+            t = time.time()
+            dfa.partial_match(s)
+            matching_time_ms = (time.time() - t) * 1000
+            matching_time_ms_list.append(matching_time_ms)
 
         rows.append({
             "Length": len(s),
-            "Match (ms)": f"{matching_time_ms:.2f}"
+            "Match (ms)": f"{sum(matching_time_ms_list) / len(matching_time_ms_list):.2f}"
         })
 
     df = pd.DataFrame(rows)
@@ -124,7 +128,7 @@ def performance_matching_time():
     return df.to_latex(
         index=False,
         escape=False,
-        caption="Performance of DFA matching for random strings with \\text{" + regexp_input + "} regex",
+        caption="Performance of DFA matching",
         label="tab:dfa-matching-performance"
     )
 
@@ -136,22 +140,30 @@ def performance_matching_nfa_vs_dfa():
     nfa = regex_to_nfa(parse_regexp(regex_str), alphabet)
     dfa = build_minimal_dfa(regex_str, alphabet)
 
-    # run with random strings of length from 100000 to 1000000 with step 10000
     test_strings = []
     for i in range(10000, 100001, 10000):
-        s = "".join(random.choice(alphabet) for _ in range(i))
-        test_strings.append(s)  
-    
+        s = "abbc" * (i // 4)
+        test_strings.append(s)
     
     rows = []   
     for s in test_strings:
-        t = time.time()
-        nfa.partial_match(s)
-        nfa_matching_time_ms = (time.time() - t) * 1000
+        # do 10 times to get an average
+        nfa_matching_time_ms_list = []
+        dfa_matching_time_ms_list = []
 
-        t = time.time()
-        dfa.partial_match(s)
-        dfa_matching_time_ms = (time.time() - t) * 1000
+        for _ in range(10):
+            t = time.time()
+            nfa.partial_match(s)
+            nfa_matching_time_ms = (time.time() - t) * 1000
+            nfa_matching_time_ms_list.append(nfa_matching_time_ms)
+
+            t = time.time()
+            dfa.partial_match(s)
+            dfa_matching_time_ms = (time.time() - t) * 1000
+            dfa_matching_time_ms_list.append(dfa_matching_time_ms)
+
+        nfa_matching_time_ms = sum(nfa_matching_time_ms_list) / len(nfa_matching_time_ms_list)
+        dfa_matching_time_ms = sum(dfa_matching_time_ms_list) / len(dfa_matching_time_ms_list)
 
         rows.append({
             "Length": len(s),
@@ -164,7 +176,7 @@ def performance_matching_nfa_vs_dfa():
     return df.to_latex(
         index=False,
         escape=False,
-        caption="Performance of NFA vs DFA matching for random strings with \\text{" + regexp_input + "} regex",
+        caption="Performance of NFA vs DFA matching",
         label="tab:nfa-vs-dfa-matching-performance"
     )
 
@@ -207,10 +219,10 @@ def run_performance_tests(regexp_input: str, alphabet: List[str], test_strings: 
     
 if __name__ == "__main__":
 
-    print("-- Performance Tests ---")
-    res = performance_build_time()
-    print("Build time performance:")
-    print(res)
+    #print("-- Performance Tests ---")
+    #res = performance_build_time()
+    ##print("Build time performance:")
+    #print(res)
     res = performance_matching_time()
     print("Matching time performance:")
     print(res)
