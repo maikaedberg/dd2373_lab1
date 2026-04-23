@@ -23,7 +23,7 @@ def build_minimal_dfa(regexstr:str, alphabet:List[str], graph:bool=False, timing
 
     return dfa 
 
-def match_substrings(regexstr_input:str, alphabet:List[str], graph:bool=False, test_strings:List[str]=[]) -> Dict[str, bool]:
+def match_substrings(regexstr_input:str, alphabet:List[str], test_strings:List[str],  graph:bool=False) -> Dict[str, bool]:
 
     regexpstr = "(.*)({R})".format(R=regexstr_input) # allow matching anywhere in the string
     dfa = build_minimal_dfa(regexpstr, alphabet, graph)

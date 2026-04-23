@@ -18,7 +18,7 @@ class TestRegexProperty(unittest.TestCase):
             s = "".join(random.choice(alphabet) for _ in range(length))
             test_strings.append(s)
 
-        result = match_substrings(regexstr_input, alphabet, test_strings=test_strings)
+        result = match_substrings(regexstr_input, alphabet, test_strings)
 
         for s in test_strings:
             expected = re.search(regexstr_input, s) is not None
