@@ -2,16 +2,16 @@ import re
 import random
 import unittest
 
-from regex import match_substring
+from regex import build_minimal_dfa
 
 import unittest
 
 class TestRegexProperty(unittest.TestCase):
 
+    def run_property_test(self, regexstr, alphabet):
 
-    def run_property_test(self, regex, alphabet):
+        dfa = build_minimal_dfa(regexstr, alphabet)
 
-        
         for i in range(1000):
             if i == 0: # test first on empty string
                 s = ""
@@ -19,13 +19,13 @@ class TestRegexProperty(unittest.TestCase):
                 length = random.randint(1, 20)
                 s = "".join(random.choice(alphabet) for _ in range(length))
 
-            expected = re.search(regex, s) is not None
-            actual = match_substring(regex, s, alphabet)
+            expected = re.search(regexstr, s) is not None
+            actual = dfa.partial_match(s)
 
             self.assertEqual(
                 actual,
                 expected,
-                msg=f"Regex: {regex} failed on string: {s}"
+                msg=f"Regex: {regexstr} failed on string: {s}"
             )
 
     def test_regex_1(self):

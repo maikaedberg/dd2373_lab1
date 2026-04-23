@@ -2,26 +2,27 @@ import re
 import random
 import unittest
 
-from regex import match_substring
-
+from regex import build_minimal_dfa
+from typing import List
 import unittest
 
 class TestRegexProperty(unittest.TestCase):
 
     alphabet = ["a", "b", "c", "d", "e"]
 
-    def run_property_test(self, regex, alphabet):
+    def run_property_test(self, regexstr:str, alphabet:List[str]):
+        dfa = build_minimal_dfa(regexstr, alphabet)
         for _ in range(1000):
             length = random.randint(0, 20)
             s = "".join(random.choice(alphabet) for _ in range(length))
 
-            expected = re.search(regex, s) is not None
-            actual = match_substring(regex, s, alphabet)
+            expected = re.search(regexstr, s) is not None
+            actual = dfa.partial_match(s)
 
             self.assertEqual(
                 actual,
                 expected,
-                msg=f"Regex: {regex} failed on string: {s}"
+                msg=f"Regex: {regexstr} failed on string: {s}"
             )
 
     def test_regex_1(self):
