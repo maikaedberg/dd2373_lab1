@@ -49,7 +49,7 @@ def run_state_count_tests():
 
     return df.to_latex(
         index=False,
-        escape=False,      # important for regex symbols!
+        escape=False,
         caption="State counts for automata",
         label="tab:state-counts"
     )
@@ -123,7 +123,7 @@ def performance_matching_time():
 
     return df.to_latex(
         index=False,
-        escape=False,      # important for regex symbols!
+        escape=False,
         caption="Performance of DFA matching for random strings with \\text{" + regexp_input + "} regex",
         label="tab:dfa-matching-performance"
     )
