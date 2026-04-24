@@ -40,31 +40,25 @@ class DFA:
             if q1 > q2
         }
 
-        for q1 in self.states:
-            for q2 in self.states:
-                if q1 <= q2:
-                    continue
-                if self.is_accepting_state(q1) != self.is_accepting_state(q2):
-                    distinguishable[(q1,q2)] = True
+        for (q1, q2) in distinguishable.keys():
+            if self.is_accepting_state(q1) != self.is_accepting_state(q2):
+                distinguishable[(q1,q2)] = True
 
         while True:
             new_markings = False
-            for q1 in self.states:
-                for q2 in self.states:
-                    if q1 <= q2:
+            for ((q1, q2), mark) in distinguishable.items():
+                if mark:
+                    continue
+                for a in self.alphabet:
+                    dst1 = self.transitions[q1][a]
+                    dst2 =  self.transitions[q2][a]
+                    # if dst1 and dst2 are equal, they are indistinguishable
+                    if dst1 == dst2:
                         continue
-                    if distinguishable[(q1,q2)]:
-                        continue
-                    for a in self.alphabet:
-                        dst1 = self.transitions[q1][a]
-                        dst2 =  self.transitions[q2][a]
-                        # if dst1 and dst2 are equal, they are indistinguishable
-                        if dst1 == dst2:
-                            continue
 
-                        if distinguishable[(max(dst1, dst2), min(dst1,dst2))]:
-                            distinguishable[(q1, q2)] = True
-                            new_markings = True
+                    if distinguishable[(max(dst1, dst2), min(dst1,dst2))]:
+                        distinguishable[(q1, q2)] = True
+                        new_markings = True
             if not new_markings:
                 break
 
